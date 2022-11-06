@@ -1,12 +1,8 @@
-import { useEffect } from "react";
-
-import { collection, query, where } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { DateUltils } from "../../commons/helpers/date-time.helper";
+import { RootState } from "../../store";
 import { ChatMessageModel } from "../../utils/models/chat-message.model";
 import avatar from "./../../assets/images/real-avatar.jpg";
-import { db } from "../../firebase/firebase";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { DateUltils } from "../../commons/helpers/date-time.helper";
 type PropTypes = {
   isSelfMessage?: boolean;
   chatMessage: ChatMessageModel;

@@ -1,15 +1,10 @@
+import { Transition } from "@headlessui/react";
+import { ChevronLeftIcon, ChevronRightIcon, LinkIcon } from "@heroicons/react/24/solid";
 import { Fragment, useRef, useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon, DocumentIcon, LinkIcon } from "@heroicons/react/24/solid";
-import { signOut } from "firebase/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../firebase/firebase";
-import { RootState } from "../store";
+import SearchBox from "../components/Search";
+import Tooltip from "../components/Tooltip";
 import { fileTypeConfig, rightSideBarConfig, rightSideBarIcons } from "../utils/configs/sidebar.config";
 import avatar from "./../assets/images/real-avatar.jpg";
-import { RightSideBarIcons } from "../utils/enums/sidebar.enum";
-import Tooltip from "../components/Tooltip";
-import { Transition } from "@headlessui/react";
-import SearchBox from "../components/Search";
 
 function RightSideBar() {
   const [isExpand, setIsExpand] = useState(false);

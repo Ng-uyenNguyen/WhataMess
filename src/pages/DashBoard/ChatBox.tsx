@@ -1,4 +1,4 @@
-import { doc, getDoc, query, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { DateUltils } from "../../commons/helpers/date-time.helper";
@@ -64,7 +64,7 @@ const ChatBox = ({ conversationInfo }: PropTypes) => {
       <div className="flex flex-col flex-1 ml-5">
         <div className="flex flex-shrink justify-between items-end mb-1">
           <div className="font-semibold text-lg leading-none">{conversationInfo.userInfo.displayName}</div>
-          <div className="font-base text-zinc-600 italic tracking-wide">{conversationInfo.latestMessage && DateUltils.formatTimeStamp(conversationInfo.latestTimeGetTouch, DateUltils.DD_MM)}</div>
+          <div className="font-base text-zinc-600 tracking-wide">{conversationInfo.latestMessage && DateUltils.formatTimeStamp(conversationInfo.latestTimeGetTouch, DateUltils.DD_MM)}</div>
         </div>
         <div className="flex-shrink text-neutral-500 tracking-wide text-ellipsis">
           <div className="max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{conversationInfo.latestMessage ? conversationInfo.latestMessage.text : "New contact"}</div>

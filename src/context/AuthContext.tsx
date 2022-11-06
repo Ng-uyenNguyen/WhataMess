@@ -1,12 +1,13 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
-import { createContext, useEffect, useState } from 'react';
+import { doc, getDoc } from "firebase/firestore";
+import { createContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/firebase";
 import { UserProfileModel } from "../utils/models/user-profile.model";
 export const AuthContext = createContext({});
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<UserProfileModel | null>(null);
+
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -19,10 +20,10 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
               displayName: docSnap.data().displayName,
               avatar: docSnap.data().avatar,
               email: docSnap.data().email,
-            }
+            };
             setCurrentUser(user);
           }
-        }
+        };
         getUserData();
       }
       setCurrentUser(null);
@@ -31,9 +32,5 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       unsub();
     };
   }, []);
-  return (
-    <AuthContext.Provider value={{ currentUser }}>
-      {children}
-    </AuthContext.Provider >
-  );
-}
+  return <AuthContext.Provider value={{ currentUser }}>{children}</AuthContext.Provider>;
+};

@@ -2,6 +2,11 @@
   "name": "reactjs-practicing",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": "14.18.0",
+    "npm":" 6.14.15"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
