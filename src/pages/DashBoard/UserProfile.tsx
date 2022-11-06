@@ -1,12 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
-import avatar from "./../../assets/images/real-avatar.jpg";
+import avatar from "./../../assets/images/avatar.png";
 import { collection, getDocs } from "firebase/firestore";
 import SearchBox from '../../components/Search';
 import { db } from '../../firebase/firebase';
+import { AuthContext } from '../../context/AuthContext';
 
 const UserProfile = () => {
+  //@ts-ignore
+  const { currentUser } = useContext(AuthContext);
+
+
   useEffect(() => {
     const getUser = async () => {
       const querySnapshot = await getDocs(collection(db, "users"));
@@ -32,7 +37,7 @@ const UserProfile = () => {
           alt="Rounded avatar"
         />
         <span className="mt-3 text-xl font-bold tracking-wide">
-          Celline Moreno
+          {currentUser.displayName}
         </span>
         <select className="my-3 py-1 px-3 bg-light-green text-green text-sm font-bold rounded-lg">
           <option value="1" className="text-green">Available</option>

@@ -1,35 +1,29 @@
+import { useState } from "react";
 import { Toast } from "../../components/Toast";
 import LeftSideBar from "../../layouts/LeftSideBar";
 import RightSideBar from "../../layouts/RightSideBar";
 import { ToastType } from "../../utils/enums/toast.enum";
 import ChatArea from "./ChatArea";
-import ChatHistory from "./ChatHistory";
+import ContactsArea from "./ContactsArea";
 import UserProfile from "./UserProfile";
 function DashBoard() {
+  const [show, setShow] = useState(true);
   return (
     <div className="w-full h-full flex">
       <LeftSideBar />
       <div className="pt-7 pb-5 ml-4 flex flex-grow ">
-        <div className="min-w-[400px] max-w-[400px] flex-grow-[0.5] overflow-hidden flex flex-col">
+        <div className="min-w-[300px] max-w-[25%] flex-grow-[0.5] overflow-hidden flex flex-col">
           <UserProfile />
-          <ChatHistory />
+          <ContactsArea />
         </div>
         <div className="px-5 flex-grow-[2] flex-wrap flex flex-col ">
           <ChatArea />
         </div>
       </div>
       <RightSideBar />
-      <Toast type={ToastType.SUCCESS} text="Login successfully!" show={true} />
+      <Toast type={ToastType.SUCCESS} text="Login successfully!" show={show} setShow={setShow} />
     </div>
   );
 }
 
 export default DashBoard;
-
-
-
-
-
-
-
-

@@ -1,30 +1,14 @@
-import { collection, doc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { db } from '../firebase/firebase';
 import { searchUserByName } from '../redux/search.slice';
 import { AppDispatch } from '../store';
 
 
 const PropTypes = {
-
-
 }
 function SearchBox({ }) {
   const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch<AppDispatch>();
-
-
-  // useEffect(() => {
-
-
-  //   return () => {
-  //     const unsub = onSnapshot(doc(db, "users"), (doc) => {
-  //       console.log("Current data: ", doc.data());
-  //     });
-  //     unsub();
-  //   }
-  // }, [])
 
   const onSearchChange = async (e: any) => {
     setSearchText(e.target.value);
@@ -32,6 +16,7 @@ function SearchBox({ }) {
 
   const handleSearch = () => {
     dispatch(searchUserByName(searchText));
+
   }
   return (
     <div className="relative my-3 w-[90%] self-center">

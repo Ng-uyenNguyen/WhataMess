@@ -1,10 +1,9 @@
+import { UserProfileModel } from "./user-profile.model";
 export interface LatestMessage {
   text: string;
-  timeStamp: number;
 }
 export interface Conversation {
-  uid: string;
-  displayName: string;
-  avatar?: string;
+  userInfo: UserProfileModel;
   latestMessage?: LatestMessage;
+  latestTimeGetTouch?: string;
 }

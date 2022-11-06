@@ -15,25 +15,28 @@ const initialState: SearchState = {
 };
 
 // Asynchronous Search
-export const searchUserByName = createAsyncThunk(
-  "search/searchUserByName",
-  async (userName: string) => {
-    const q = query(
-      collection(db, "users"),
-      where("displayName", ">=", userName),
-      where("displayName", "<=", userName + "\uf8ff")
-    );
+export const searchUserByName = createAsyncThunk("search/searchUserByName", async (userName: string) => {
+  const q = query(collection(db, "users"), where("displayName", ">=", userName), where("displayName", "<=", userName + "\uf8ff"));
 
-    try {
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    const userList: Conversation[] = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const user: Conversation = {
+        userInfo: {
+          uid: doc.data().uid,
+          displayName: doc.data().displayName,
+          avatar: doc.data().avatar,
+        },
+      };
+      userList.push(user);
+    });
+
+    return userList;
+  } catch (err) {
+    throw new Error("" + err);
   }
-);
+});
 
 const searchSlice = createSlice({
   name: "search",
@@ -45,10 +48,10 @@ const searchSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(searchUserByName.fulfilled, (state, { payload }) => {
-      console.log(payload);
+      state.userList = payload ? [...payload] : [];
     });
-    builder.addCase(searchUserByName.rejected, (state, { payload }) => {
-      console.log("error happens");
+    builder.addCase(searchUserByName.rejected, (state, { error }) => {
+      console.log(error);
     });
   },
 });

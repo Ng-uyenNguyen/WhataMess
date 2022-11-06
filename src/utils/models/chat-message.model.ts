@@ -1,8 +1,8 @@
 import { Timestamp } from "firebase/firestore";
 
-export interface ChatMessage {
-  id: string;
-  text: string;
-  senderId: string;
-  date: Timestamp;
+export interface ChatMessageModel {
+  id?: string;
+  text?: string;
+  senderId?: string;
+  time?: Timestamp;
 }
