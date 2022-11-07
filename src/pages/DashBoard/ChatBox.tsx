@@ -1,14 +1,14 @@
-import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DateUltils } from "../../commons/helpers/date-time.helper";
 import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase/firebase";
 import { updateCurrentChat, updateCurrentChattingUser } from "../../redux/chatbox.slice";
+import { AppDispatch, RootState } from '../../store';
 import { Conversation } from "../../utils/models/conversation.model";
 import { UserProfileModel } from "../../utils/models/user-profile.model";
 import avatar from "./../../assets/images/avatar.png";
-import { AppDispatch, RootState } from '../../store';
 
 type PropTypes = {
   conversationInfo: Conversation;

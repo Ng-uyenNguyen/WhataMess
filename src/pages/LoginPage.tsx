@@ -8,7 +8,6 @@ import logo from "../assets/images/chat-app-logo.png";
 import { Toast } from "../components/Toast";
 import { auth, db } from "../firebase/firebase";
 import { ToastType } from "../utils/enums/toast.enum";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function LoginPage() {
   const [pageMode, setPageMode] = useState(1);
@@ -63,17 +62,17 @@ function LoginPage() {
     validationSchema: Yup.object().shape(
       pageMode !== 1
         ? {
-            displayName: Yup.string().required("Display name is required").min(5, "Display name must be at least 5 characters"),
-            email: Yup.string().required("Email is required").email("Invalid email"),
-            password: Yup.string().required("Password is required").min(5, "Password must have min 5 characters"),
-            "re-password": Yup.string()
-              .required("Confirm password is required")
-              .oneOf([Yup.ref("password"), null], "Passwords must match"),
-          }
+          displayName: Yup.string().required("Display name is required").min(5, "Display name must be at least 5 characters"),
+          email: Yup.string().required("Email is required").email("Invalid email"),
+          password: Yup.string().required("Password is required").min(5, "Password must have min 5 characters"),
+          "re-password": Yup.string()
+            .required("Confirm password is required")
+            .oneOf([Yup.ref("password"), null], "Passwords must match"),
+        }
         : {
-            email: Yup.string().required("Email is required").email("Invalid email"),
-            password: Yup.string().required("Password is required").min(5, "Password must have min 5 characters"),
-          }
+          email: Yup.string().required("Email is required").email("Invalid email"),
+          password: Yup.string().required("Password is required").min(5, "Password must have min 5 characters"),
+        }
     ),
     onSubmit: (values) => {
       pageMode === 1 ? handleSignin(values.email, values.password) : handleSignUp(values.email, values.password, values.displayName);

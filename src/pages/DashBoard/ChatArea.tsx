@@ -90,7 +90,7 @@ const ChatArea = () => {
         <div className="flex absolute inset-y-0 right-8 items-center pl-3 z-10">
           <FaceSmileIcon className="w-6 h-6 mx-2 cursor-pointer text-gray-300 hover:text-gray-500" />
           <PaperClipIcon className="w-6 h-6 mx-2 cursor-pointer text-gray-300 hover:text-gray-500" />
-          <button className="px-3 py-3 mx-2 bg-green hover:bg-green-4 active:bg-green-5 rounded-xl shadow-lg">
+          <button className="px-3 py-3 mx-2 bg-green hover:bg-green-4 active:bg-green-5 rounded-xl shadow-lg" onClick={handleSendMessage}>
             <PaperAirplaneIcon className="w-6 h-6  cursor-pointer text-white -rotate-45" />
           </button>
         </div>
