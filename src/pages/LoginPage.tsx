@@ -8,6 +8,7 @@ import logo from "../assets/images/chat-app-logo.png";
 import { Toast } from "../components/Toast";
 import { auth, db } from "../firebase/firebase";
 import { ToastType } from "../utils/enums/toast.enum";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function LoginPage() {
   const [pageMode, setPageMode] = useState(1);

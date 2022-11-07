@@ -41,7 +41,7 @@ function RightSideBar() {
           {isExpand && <div className="text-xl font-semibold text-opacity-95 text-zinc-900">Shared files</div>}
         </div>
       </div>
-      <img className={"rounded-full object-cover " + (!isExpand ? "w-10 h-10" : "w-32 h-32")} src={avatar} alt="Rounded avatar" />
+      <img className={"rounded-full object-cover " + (!isExpand ? "w-10 h-10" : "w-32 h-32")} src={currentChattingUserInfo?.avatar || avatar} alt="Rounded avatar" />
       {!isExpand ? (
         <ul className="absolute top-1/2 -translate-y-[50%] w-fit flex flex-col items-center justify-between h-[40%] text-sm font-medium text-gray-500 dark:text-gray-400">
           {rightSideBarConfig.map((item) => {

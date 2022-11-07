@@ -2,6 +2,7 @@ import { collection, doc, getDoc, getDocs, query, where } from "firebase/firesto
 import { db } from "../../firebase/firebase";
 import { Conversation } from "../../utils/models/conversation.model";
 import { globalUserId } from "../../context/AuthContext";
+import { UserProfileModel } from "../../utils/models/user-profile.model";
 
 export const getNewUserContactListByEmail = async (email: string) => {
   const q = query(collection(db, "users"), where("email", ">=", email), where("email", "<=", email + "\uf8ff"));
@@ -40,5 +41,19 @@ export const getNewUserContactListByEmail = async (email: string) => {
     return searchResult;
   } catch (err) {
     throw new Error("" + err);
+  }
+};
+
+export const getUserProfileByUid = async (uid: string) => {
+  if (uid) {
+    const userDoc = doc(db, "users", uid);
+    try {
+      const userSnapshot = await getDoc(userDoc);
+      if (userSnapshot.exists()) {
+        return userSnapshot.data() as UserProfileModel;
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 };

@@ -1,6 +1,6 @@
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
-import { useContext } from "react";
-import { useDispatch } from "react-redux";
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { DateUltils } from "../../commons/helpers/date-time.helper";
 import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase/firebase";
@@ -8,15 +8,20 @@ import { updateCurrentChat, updateCurrentChattingUser } from "../../redux/chatbo
 import { Conversation } from "../../utils/models/conversation.model";
 import { UserProfileModel } from "../../utils/models/user-profile.model";
 import avatar from "./../../assets/images/avatar.png";
+import { AppDispatch, RootState } from '../../store';
 
 type PropTypes = {
   conversationInfo: Conversation;
 };
 const ChatBox = ({ conversationInfo }: PropTypes) => {
+
+  const [userInfo, setUserInfo] = useState<UserProfileModel>();
   //@ts-ignore
   const { currentUser } = useContext(AuthContext);
 
-  const dispatch = useDispatch();
+  const currentChattingUserInfo = useSelector((state: RootState) => state.chat.currentChattingUser);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSelect = async () => {
     //check whether the group(chats in firestore) exists, if not create
@@ -51,17 +56,36 @@ const ChatBox = ({ conversationInfo }: PropTypes) => {
           },
           [combinedId + ".latestTimeGetTouch"]: serverTimestamp(),
         });
-        dispatch(updateCurrentChattingUser(currentChattingUserInfo));
+        dispatch(updateCurrentChattingUser(currentChattingUserInfo.uid));
         dispatch(updateCurrentChat(combinedId));
       } else {
-        dispatch(updateCurrentChattingUser(currentChattingUserInfo));
+        dispatch(updateCurrentChattingUser(currentChattingUserInfo.uid));
         dispatch(updateCurrentChat(combinedId));
       }
-    } catch (err) {}
+    } catch (err) { }
   };
+
+
+  useEffect(() => {
+    const getUserProfile = async () => {
+      const userDoc = doc(db, "users", conversationInfo.userInfo.uid);
+      try {
+        const userSnapshot = await getDoc(userDoc);
+        if (userSnapshot.exists()) {
+          setUserInfo(userSnapshot.data() as UserProfileModel);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    return () => {
+      getUserProfile();
+    }
+  }, [conversationInfo])
+
   return (
-    <div className="flex items-center px-4 py-6 rounded-lg cursor-pointer hover:bg-slate-100" onClick={handleSelect}>
-      <img src={avatar} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+    <div className={"flex items-center px-4 py-6 rounded-sm cursor-pointer hover:bg-slate-100 " + (currentChattingUserInfo?.uid === conversationInfo.userInfo.uid && 'bg-gray-100')} onClick={handleSelect}>
+      <img src={userInfo?.avatar || avatar} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
       <div className="flex flex-col flex-1 ml-5">
         <div className="flex flex-shrink justify-between items-end mb-1">
           <div className="font-semibold text-lg leading-none">{conversationInfo.userInfo.displayName}</div>

@@ -1,41 +1,49 @@
 import { useEffect, useContext, useState } from "react";
 
 import { EllipsisVerticalIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from '../../store';
 import { SideBarModes } from "../../utils/enums/sidebar.enum";
 import ChatBox from "./ChatBox";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { AuthContext } from "../../context/AuthContext";
 import { Conversation } from "../../utils/models/conversation.model";
+import { updateCurrentChat, updateCurrentChattingUser } from '../../redux/chatbox.slice';
 
 const ContactsArea = () => {
   const [contactList, setContactList] = useState<Conversation[]>([]);
   //@ts-ignore
   const { currentUser } = useContext(AuthContext);
-
+  const dispatch = useDispatch<AppDispatch>();
   const searchResult = useSelector((state: RootState) => state.search.userList);
 
   useEffect(() => {
     const getChats = () => {
+      let chatId = '';
       const unsub = onSnapshot(doc(db, "conversations", currentUser.uid), (doc) => {
         if (doc && doc.data()) {
           let conversations: Conversation[] = [];
           Object.entries(doc.data() || {})
             .sort((a, b) => b[1].latestTimeGetTouch - a[1].latestTimeGetTouch)
-            .forEach((item) => {
+            .forEach((item, index) => {
+              if (index === 0) {
+                chatId = item[0];
+                console.log(chatId);
+
+              }
               item[1].latestMessage && item[1].latestMessage.text !== "" && conversations.push(item[1] as Conversation);
             });
 
           setContactList(conversations);
+          dispatch(updateCurrentChattingUser(conversations[0].userInfo.uid));
+          dispatch(updateCurrentChat(chatId));
         }
       });
       return () => {
         unsub();
       };
     };
-
     currentUser.uid && getChats();
   }, [currentUser.uid]);
 
@@ -44,7 +52,7 @@ const ContactsArea = () => {
     <div className="pt-5 flex flex-col flex-1 overflow-hidden">
       {sideBarMode === SideBarModes.RECENT && (
         <>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center ">
             <span className="tracking-wide text-slate-500 font-medium">Latest chats</span>
             <div className="flex">
               <button className="px-2 py-2 rounded-xl text-green bg-light-green hover:bg-green-3 hover:text-light-green">

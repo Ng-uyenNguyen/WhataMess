@@ -11,12 +11,12 @@ function DashBoard() {
   return (
     <div className="w-full h-full flex">
       <LeftSideBar />
-      <div className="pt-7 pb-5 ml-4 flex flex-grow ">
-        <div className="min-w-[300px] max-w-[25%] flex-grow-[0.5] overflow-hidden flex flex-col">
+      <div className="pt-7 pb-5 flex flex-grow ">
+        <div className="min-w-[300px] max-w-[35%] flex-grow-[0.5] px-2 overflow-hidden flex flex-col">
           <UserProfile />
           <ContactsArea />
         </div>
-        <div className="px-5 flex-grow-[2] flex-wrap flex flex-col ">
+        <div className="flex-grow-[2] flex-wrap flex flex-col ">
           <ChatArea />
         </div>
       </div>

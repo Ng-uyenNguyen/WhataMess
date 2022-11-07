@@ -46,6 +46,9 @@ const ChatArea = () => {
 
   const handleSendMessage = async () => {
     if (currentChatId && currentChattingUserInfo) {
+      if (chatMessages.length === 0) {
+        dispatch(searchUserByEmail(currentSearchText));
+      }
       await updateDoc(doc(db, "conversation", currentChatId), {
         messages: arrayUnion({
           id: uuid(),
@@ -67,7 +70,6 @@ const ChatArea = () => {
         [currentChatId + ".latestTimeGetTouch"]: serverTimestamp(),
       });
       setChatMessageText("");
-      dispatch(searchUserByEmail(currentSearchText));
     }
   };
   return (

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getNewUserContactListByEmail } from "../commons/helpers/contacts.helper";
+import { getNewUserContactListByEmail } from "../commons/helpers/contacts.service";
 import { Conversation } from "../utils/models/conversation.model";
 
 interface ContactState {
