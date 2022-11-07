@@ -25,7 +25,7 @@ const ContactsArea = () => {
           Object.entries(doc.data() || {})
             .sort((a, b) => b[1].latestTimeGetTouch - a[1].latestTimeGetTouch)
             .forEach((item) => {
-              conversations.push(item[1] as Conversation);
+              item[1].latestMessage && item[1].latestMessage.text !== "" && conversations.push(item[1] as Conversation);
             });
 
           setContactList(conversations);
@@ -63,7 +63,7 @@ const ContactsArea = () => {
         </>
       )}
       {sideBarMode === SideBarModes.FRIENDS && (
-        <div>
+        <>
           <div className="flex justify-between items-center">
             <span className="tracking-wide text-slate-500 font-medium">New Contacts</span>
             <div className="flex">
@@ -80,7 +80,7 @@ const ContactsArea = () => {
               <ChatBox key={result.userInfo.uid} conversationInfo={result} />
             ))}
           </div>
-        </div>
+        </>
       )}
     </div>
   );

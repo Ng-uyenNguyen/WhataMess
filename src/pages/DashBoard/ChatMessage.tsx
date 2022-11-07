@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { DateUltils } from "../../commons/helpers/date-time.helper";
 import { RootState } from "../../store";
 import { ChatMessageModel } from "../../utils/models/chat-message.model";
-import avatar from "./../../assets/images/real-avatar.jpg";
+import avatar from "./../../assets/images/avatar.png";
 type PropTypes = {
   isSelfMessage?: boolean;
   chatMessage: ChatMessageModel;

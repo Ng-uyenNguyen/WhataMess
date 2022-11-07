@@ -2,13 +2,14 @@ import { useEffect, useState, useContext } from "react";
 import { FaceSmileIcon, PaperAirplaneIcon, PaperClipIcon } from "@heroicons/react/24/solid";
 import { arrayUnion, doc, onSnapshot, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import ChatMessage from "./ChatMessage";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../store";
 import { ChatMessageModel } from "../../utils/models/chat-message.model";
 import { db } from "../../firebase/firebase";
 import { AuthContext } from "../../context/AuthContext";
 //@ts-ignore
 import { v4 as uuid } from "uuid";
+import { searchUserByEmail } from "../../redux/contacts.slice";
 
 const ChatArea = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessageModel[]>([]);
@@ -18,8 +19,10 @@ const ChatArea = () => {
   const { currentUser } = useContext(AuthContext);
 
   const currentChatId = useSelector((state: RootState) => state.chat.chatId);
-
+  const currentSearchText = useSelector((state: RootState) => state.search.searchText);
   const currentChattingUserInfo = useSelector((state: RootState) => state.chat.currentChattingUser);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const getConversation = () => {
@@ -64,6 +67,7 @@ const ChatArea = () => {
         [currentChatId + ".latestTimeGetTouch"]: serverTimestamp(),
       });
       setChatMessageText("");
+      dispatch(searchUserByEmail(currentSearchText));
     }
   };
   return (

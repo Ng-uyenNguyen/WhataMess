@@ -1,14 +1,17 @@
 import { Transition } from "@headlessui/react";
 import { ChevronLeftIcon, ChevronRightIcon, LinkIcon } from "@heroicons/react/24/solid";
 import { Fragment, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import SearchBox from "../components/Search";
 import Tooltip from "../components/Tooltip";
 import { fileTypeConfig, rightSideBarConfig, rightSideBarIcons } from "../utils/configs/sidebar.config";
-import avatar from "./../assets/images/real-avatar.jpg";
+import avatar from "./../assets/images/avatar.png";
+import { RootState } from "../store";
 
 function RightSideBar() {
   const [isExpand, setIsExpand] = useState(false);
   const [fileOrLink, setFileOrLink] = useState(1);
+  const currentChattingUserInfo = useSelector((state: RootState) => state.chat.currentChattingUser);
 
   const sideBarRef = useRef<HTMLDivElement>(null);
   const emptyArray = Array.from(Array(30).keys());
@@ -53,11 +56,11 @@ function RightSideBar() {
         </ul>
       ) : (
         <div className="mt-4 w-full flex flex-1 min-h-0 overflow-y-hidden flex-col gap-4">
-          <div className="text-2xl font-medium text-center">Celline Moreno</div>
+          <div className="text-2xl font-medium text-center">{currentChattingUserInfo?.displayName}</div>
           <SearchBox />
           <div className="px-5 w-full flex justify-between gap-5">
-            <ShareTypeBox active={fileOrLink === 1} switchType={() => setFileOrLink(1)} shareType={1} total={250} />
-            <ShareTypeBox active={fileOrLink === 2} switchType={() => setFileOrLink(2)} shareType={2} total={45} />
+            <ShareTypeBox active={fileOrLink === 1} switchType={() => setFileOrLink(1)} shareType={1} total={0} />
+            <ShareTypeBox active={fileOrLink === 2} switchType={() => setFileOrLink(2)} shareType={2} total={0} />
           </div>
           <Transition show={fileOrLink === 1} enter="transition-opacity duration-200" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-200" leaveFrom="opacity-100" leaveTo="opacity-0" className="flex-1 overflow-hidden pb-3">
             <div className="px-5 text-gray-600 text-base text-left font-semibold tracking-wide">File types</div>
@@ -73,9 +76,9 @@ function RightSideBar() {
             <div className="flex-1 flex flex-col px-5 w-full overflow-hidden">
               <div className="text-gray-600 text-base text-left font-semibold tracking-wide">All links</div>
               <div className="h-full overflow-auto">
-                {emptyArray.map((_, index) => (
+                {/* {emptyArray.map((_, index) => (
                   <CustomLinkWithTooltip key={index} link="https://www.google.com/webhp?hl=vi&sa=X&ved=0ahUKEwiBvLzxno74AhX1qlYBHY8jC1UQPAgI" toolTipUp={emptyArray.length - 1 - index < 3} />
-                ))}
+                ))} */}
               </div>
             </div>
           </Transition>
@@ -92,7 +95,7 @@ const FileType = ({ file }: { file: rightSideBarIcons }) => {
         {file.icon}
         <div className="ml-4">
           <div className="capitalize text-base font-bold">{file.value}</div>
-          <div className="text-gray-400 font-light">126 files, 193MB</div>
+          <div className="text-gray-400 font-light">0 files, 0MB</div>
         </div>
       </div>
       <ChevronRightIcon className="w-6 h-6 text-gray-500" />

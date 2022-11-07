@@ -7,7 +7,7 @@ import { db } from "../../firebase/firebase";
 import { updateCurrentChat, updateCurrentChattingUser } from "../../redux/chatbox.slice";
 import { Conversation } from "../../utils/models/conversation.model";
 import { UserProfileModel } from "../../utils/models/user-profile.model";
-import avatar from "./../../assets/images/User-avatar.svg.webp";
+import avatar from "./../../assets/images/avatar.png";
 
 type PropTypes = {
   conversationInfo: Conversation;
@@ -23,7 +23,11 @@ const ChatBox = ({ conversationInfo }: PropTypes) => {
     const combinedId = currentUser.uid > conversationInfo.userInfo.uid ? currentUser.uid + conversationInfo.userInfo.uid : conversationInfo.userInfo.uid + currentUser.uid;
     try {
       const res = await getDoc(doc(db, "conversation", combinedId));
-
+      const currentChattingUserInfo: UserProfileModel = {
+        uid: conversationInfo.userInfo.uid,
+        displayName: conversationInfo.userInfo.displayName,
+        avatar: conversationInfo.userInfo.avatar,
+      };
       if (!res.exists()) {
         //create a chat in chats collection
         await setDoc(doc(db, "conversation", combinedId), { messages: [] });
@@ -47,12 +51,9 @@ const ChatBox = ({ conversationInfo }: PropTypes) => {
           },
           [combinedId + ".latestTimeGetTouch"]: serverTimestamp(),
         });
+        dispatch(updateCurrentChattingUser(currentChattingUserInfo));
+        dispatch(updateCurrentChat(combinedId));
       } else {
-        const currentChattingUserInfo: UserProfileModel = {
-          uid: conversationInfo.userInfo.uid,
-          displayName: conversationInfo.userInfo.displayName,
-          avatar: conversationInfo.userInfo.avatar,
-        };
         dispatch(updateCurrentChattingUser(currentChattingUserInfo));
         dispatch(updateCurrentChat(combinedId));
       }
@@ -64,7 +65,7 @@ const ChatBox = ({ conversationInfo }: PropTypes) => {
       <div className="flex flex-col flex-1 ml-5">
         <div className="flex flex-shrink justify-between items-end mb-1">
           <div className="font-semibold text-lg leading-none">{conversationInfo.userInfo.displayName}</div>
-          <div className="font-base text-zinc-600 tracking-wide">{conversationInfo.latestMessage && DateUltils.formatTimeStamp(conversationInfo.latestTimeGetTouch, DateUltils.DD_MM)}</div>
+          <div className="font-base text-zinc-600 tracking-wide">&#183; {conversationInfo.latestMessage && DateUltils.formatTimeStamp(conversationInfo.latestTimeGetTouch, DateUltils.DD_MM)}</div>
         </div>
         <div className="flex-shrink text-neutral-500 tracking-wide text-ellipsis">
           <div className="max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{conversationInfo.latestMessage ? conversationInfo.latestMessage.text : "New contact"}</div>

@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatReducer } from "./redux/chatbox.slice";
-import { searchReducer } from "./redux/search.slice";
+import { searchReducer } from "./redux/contacts.slice";
 import { sidebarReducer } from "./redux/sidebar.slice";
 
 export const store = configureStore({

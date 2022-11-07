@@ -3,7 +3,9 @@ import { doc, getDoc } from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/firebase";
 import { UserProfileModel } from "../utils/models/user-profile.model";
+
 export const AuthContext = createContext({});
+export let globalUserId: string = "";
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<UserProfileModel | null>(null);
@@ -22,6 +24,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
               email: docSnap.data().email,
             };
             setCurrentUser(user);
+            globalUserId = user.uid;
           }
         };
         getUserData();
