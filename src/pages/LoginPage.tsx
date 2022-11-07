@@ -201,7 +201,7 @@ function LoginPage() {
           )}
         </form>
       </div>
-      <Toast type={ToastType.ERROR} text="Wrong username or password!" show={showToast} setShow={setShowToast} />;
+      <Toast type={ToastType.ERROR} text="Wrong username or password!" show={showToast} setShow={setShowToast} />
     </div>
   );
 }
