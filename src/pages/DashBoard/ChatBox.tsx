@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateUltils } from "../../commons/helpers/date-time.helper";
 import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase/firebase";
-import { updateCurrentChat, updateCurrentChattingUser } from "../../redux/chatbox.slice";
+import { updateCurrentChatId, updateCurrentChattingUser } from "../../redux/chatbox.slice";
 import { AppDispatch, RootState } from '../../store';
 import { Conversation } from "../../utils/models/conversation.model";
 import { UserProfileModel } from "../../utils/models/user-profile.model";
@@ -57,10 +57,10 @@ const ChatBox = ({ conversationInfo }: PropTypes) => {
           [combinedId + ".latestTimeGetTouch"]: serverTimestamp(),
         });
         dispatch(updateCurrentChattingUser(currentChattingUserInfo.uid));
-        dispatch(updateCurrentChat(combinedId));
+        dispatch(updateCurrentChatId(combinedId));
       } else {
         dispatch(updateCurrentChattingUser(currentChattingUserInfo.uid));
-        dispatch(updateCurrentChat(combinedId));
+        dispatch(updateCurrentChatId(combinedId));
       }
     } catch (err) { }
   };

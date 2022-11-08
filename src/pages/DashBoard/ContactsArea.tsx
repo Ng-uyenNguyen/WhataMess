@@ -9,35 +9,26 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { AuthContext } from "../../context/AuthContext";
 import { Conversation } from "../../utils/models/conversation.model";
-import { updateCurrentChat, updateCurrentChattingUser } from '../../redux/chatbox.slice';
+import SearchBox from "../../components/Search";
 
 const ContactsArea = () => {
   const [contactList, setContactList] = useState<Conversation[]>([]);
   //@ts-ignore
   const { currentUser } = useContext(AuthContext);
-  const dispatch = useDispatch<AppDispatch>();
   const searchResult = useSelector((state: RootState) => state.search.userList);
 
   useEffect(() => {
     const getChats = () => {
-      let chatId = '';
       const unsub = onSnapshot(doc(db, "conversations", currentUser.uid), (doc) => {
         if (doc && doc.data()) {
           let conversations: Conversation[] = [];
           Object.entries(doc.data() || {})
             .sort((a, b) => b[1].latestTimeGetTouch - a[1].latestTimeGetTouch)
             .forEach((item, index) => {
-              if (index === 0) {
-                chatId = item[0];
-                console.log(chatId);
-
-              }
               item[1].latestMessage && item[1].latestMessage.text !== "" && conversations.push(item[1] as Conversation);
             });
-
           setContactList(conversations);
-          dispatch(updateCurrentChattingUser(conversations[0].userInfo.uid));
-          dispatch(updateCurrentChat(chatId));
+
         }
       });
       return () => {
@@ -72,6 +63,7 @@ const ContactsArea = () => {
       )}
       {sideBarMode === SideBarModes.FRIENDS && (
         <>
+          <SearchBox />
           <div className="flex justify-between items-center">
             <span className="tracking-wide text-slate-500 font-medium">New Contacts</span>
             <div className="flex">

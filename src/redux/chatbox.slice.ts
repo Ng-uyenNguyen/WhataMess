@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserProfileModel } from "../utils/models/user-profile.model";
-import { getUserProfileByUid } from "../commons/helpers/contacts.service";
+import { getUserProfileByUid } from "../services/api.service";
 interface ChatState {
   chatId: string;
   currentChattingUser: UserProfileModel | null;
@@ -19,7 +19,7 @@ const chatSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    updateCurrentChat: (state, action: PayloadAction<string>) => {
+    updateCurrentChatId: (state, action: PayloadAction<string>) => {
       state.chatId = action.payload;
     },
   },
@@ -33,6 +33,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { updateCurrentChat } = chatSlice.actions;
+export const { updateCurrentChatId } = chatSlice.actions;
 
 export const chatReducer = chatSlice.reducer;

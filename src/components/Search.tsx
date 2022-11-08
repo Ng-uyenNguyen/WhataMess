@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { changeSearchText, searchUserByEmail } from "../redux/contacts.slice";
 import { AppDispatch } from "../store";
 
-function SearchBox({}) {
+function SearchBox({ }) {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 

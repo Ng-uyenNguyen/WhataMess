@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
 import { ChatMessageModel } from "../../utils/models/chat-message.model";
 import { db } from "../../firebase/firebase";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from '../../context/AuthContext';
 //@ts-ignore
 import { v4 as uuid } from "uuid";
 import { searchUserByEmail } from "../../redux/contacts.slice";
+import { getUserConversationsByUid } from '../../services/api.service';
+import { updateCurrentChatId, updateCurrentChattingUser } from '../../redux/chatbox.slice';
 
 const ChatArea = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessageModel[]>([]);
@@ -36,6 +38,20 @@ const ChatArea = () => {
     };
     currentChatId && getConversation();
   }, [currentChatId]);
+
+  useEffect(() => {
+    const getConversationList = async () => {
+      const conversationList = await getUserConversationsByUid(currentUser.uid);
+      if (conversationList) {
+        dispatch(updateCurrentChattingUser(Object.values(conversationList)[0].userInfo.uid));
+        dispatch(updateCurrentChatId(Object.keys(conversationList)[0]))
+      }
+    }
+    return () => {
+      getConversationList();
+    }
+  }, [])
+
 
   const addNewLineToTextArea = () => {
     const messageWithNewLine = chatMessageText + "\r\n";
@@ -73,7 +89,7 @@ const ChatArea = () => {
     }
   };
   return (
-    <div className="bg-stone rounded-lg flex-1 flex flex-col pb-4 overflow-hidden">
+    <div className="bg-stone rounded-lg flex-1 flex flex-col pb-4 overflow-hidden mr-2">
       <div className="h-[5vh] flex justify-between box-content py-4 px-4 items-center border-b border-b-gray-300">
         <span className="text-2xl font-medium">{currentChattingUserInfo?.displayName}</span>
         <div>

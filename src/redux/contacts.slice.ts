@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getNewUserContactListByEmail } from "../commons/helpers/contacts.service";
+import { getNewUserContactListByEmail } from "../services/api.service";
 import { Conversation } from "../utils/models/conversation.model";
 
 interface ContactState {
@@ -15,7 +15,6 @@ const initialState: ContactState = {
 // Asynchronous Tasks
 export const searchUserByEmail = createAsyncThunk("contact/searchUserByName", async (email: string) => {
   const searchResult = await getNewUserContactListByEmail(email);
-  console.log(searchResult);
   return searchResult;
 });
 

@@ -3,14 +3,23 @@ import { DateUltils } from "../../commons/helpers/date-time.helper";
 import { RootState } from "../../store";
 import { ChatMessageModel } from "../../utils/models/chat-message.model";
 import avatar from "./../../assets/images/avatar.png";
+import { useEffect, useRef } from 'react';
 type PropTypes = {
   isSelfMessage?: boolean;
   chatMessage: ChatMessageModel;
 };
 const ChatMessage = ({ isSelfMessage = false, chatMessage }: PropTypes) => {
+
+  const messageRef = useRef<HTMLDivElement>(null);
+
   const currentChattingUserInfo = useSelector((state: RootState) => state.chat.currentChattingUser);
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessage])
+
   return (
-    <div className="flex flex-col my-5 w-full">
+    <div className="flex flex-col my-5 w-full" ref={messageRef}>
       <div className={"flex gap-2 " + (isSelfMessage && "flex-row-reverse")}>
         {!isSelfMessage && <img src={currentChattingUserInfo?.avatar || avatar} alt="avatar" className="w-10 h-10 rounded-full self-end object-cover" />}
         <div className="flex flex-col max-w-[70%]">

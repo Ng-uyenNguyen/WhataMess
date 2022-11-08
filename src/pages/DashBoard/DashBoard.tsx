@@ -16,7 +16,7 @@ function DashBoard() {
           <UserProfile />
           <ContactsArea />
         </div>
-        <div className="flex-grow-[2] flex-wrap flex flex-col ">
+        <div className="flex-[2] flex-wrap flex flex-col ">
           <ChatArea />
         </div>
       </div>

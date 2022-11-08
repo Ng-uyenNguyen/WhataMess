@@ -73,7 +73,6 @@ const UserProfile = () => {
           <option value="1" className="text-black bg-white">Available</option>
           <option value="0" className="text-black bg-white">Offline</option>
         </select>
-        <SearchBox />
       </div>
     </div>
   );
